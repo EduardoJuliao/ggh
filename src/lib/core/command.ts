@@ -13,22 +13,25 @@ export class Runner {
          case 'pull':
             this.pull();
             break;
-         case 'pull-full':
-            this.pull();
+         case 'clean':
+            this.clean();
             break;
       };
    }
 
-   private pull(): void {
-      exec('git pull');
-      exec('gulp js:app');
-      exec('gulp css:build');
-   }
-
-   private pull_full(): void {
+   private clean(): void {
+      exec('gulp services:console:stop');
       exec('git clean -fdxq');
       exec('git pull --rebase');
+      exec('gulp solution:build');
       exec('gulp db:deploy');
+      exec('gulp js:app');
+      exec('gulp css:build');
+      exec('gulp services:console:start');
+   }
+
+   private pull(): void {
+      exec('git pull');
       exec('gulp js:app');
       exec('gulp css:build');
    }

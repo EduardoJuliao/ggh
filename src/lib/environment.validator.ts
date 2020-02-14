@@ -1,7 +1,7 @@
 import { which, echo } from 'shelljs';
 
 const pathDependencies = ['git', 'gulp', 'npm']
-const acceptedCommands = ['pull'];
+const acceptedCommands = ['pull', 'clean'];
 
 export function runEnvCheck(): boolean {
    for (let i = 0; i < pathDependencies.length; i++) {
