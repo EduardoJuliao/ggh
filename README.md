@@ -25,3 +25,7 @@ or
 ```powershell
 npm run publish-local
 ```
+
+## BTW
+
+It's a complete mess and needs improvements
