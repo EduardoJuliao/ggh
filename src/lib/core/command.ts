@@ -36,28 +36,39 @@ export class Runner {
       exec('gulp services:console:start');
    }
 
-   private cleanFolders(): void {
-      sync('./bin');
-      sync('./test-bin');
-   }
-
    private pull(): void {
       exec('git pull');
       exec('gulp');
    }
 
    private merge(): void {
-      exec('gulp services:console:stop');
-      this.cleanFolders();
-      exec('git checkout develop');
-      exec('git pull --rebase');
-      exec('git checkout ' + this.currentBranchName);
-      exec('git merge develop');
-      exec('nuget restore');
-      exec('npm ci');
-      exec('gulp');
-      exec('gulp services:console:start');
+      const branchName = this.currentBranchName;
+      this.services(() => {
+         this.cleanFolders();
+         exec('git checkout develop');
+         exec('git pull --rebase');
+         exec('git checkout ' + branchName);
+         exec('git merge develop');
+         this.restore();
+         exec('gulp');
+      });
    }
 
    private currentBranchName: string = exec('git rev-parse --abbrev-ref HEAD').stdout;
+
+   private restore(): void {
+      exec('nuget restore');
+      exec('npm ci');
+   }
+
+   private cleanFolders(): void {
+      sync('./bin');
+      sync('./test-bin');
+   }
+
+   private services(callback: () => void) {
+      exec('gulp services:console:stop');
+      callback();
+      exec('gulp services:console:start');
+   }
 }
