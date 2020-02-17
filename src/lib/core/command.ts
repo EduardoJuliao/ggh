@@ -54,7 +54,7 @@ export class Runner {
       });
    }
 
-   private currentBranchName: string = exec('git rev-parse --abbrev-ref HEAD').stdout;
+   private currentBranchName: string = exec('git rev-parse --abbrev-ref HEAD', { silent: true }).stdout;
 
    private restore(): void {
       exec('nuget restore');
