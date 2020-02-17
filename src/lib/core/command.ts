@@ -27,11 +27,10 @@ export class Runner {
    private clean(): void {
       this.services(() => {
          exec('git clean -fdx');
-         exec('git pull');
          this.restore();
          exec('gulp solution:build');
          exec('gulp');
-         exec('gulp db:deploy');
+         exec('gulp db:tiny');
       });
    }
 

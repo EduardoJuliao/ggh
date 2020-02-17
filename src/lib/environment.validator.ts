@@ -1,5 +1,8 @@
 import { which, echo } from 'shelljs';
-import { pathDependencies, acceptedCommands } from '../env.json';
+import { pathDependencies, acceptedCommands, optionals } from '../env.json';
+import { getKeys, diff } from './helpers/array.helpers.js';
+
+const optionalKeys = getKeys(optionals);
 
 export function runEnvCheck(): boolean {
    for (let i = 0; i < pathDependencies.length; i++) {
@@ -9,6 +12,19 @@ export function runEnvCheck(): boolean {
          return false;
       }
    }
+   return true;
+}
+
+export function runOptionalCheck(optionalCommands: Array<{ key: string, value: string }>): boolean {
+   var args = getKeys(optionalCommands);
+   const nonRecognizedKeys = diff(args, optionalKeys);
+
+   if (nonRecognizedKeys.length > 0) {
+      const keys = nonRecognizedKeys.join('" , "'); // this is horrible I know
+      echo(`the keys "${keys}" are not valid keys.`);
+      return false;
+   }
+
    return true;
 }
 
