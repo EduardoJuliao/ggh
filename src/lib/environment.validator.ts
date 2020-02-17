@@ -13,5 +13,8 @@ export function runEnvCheck(): boolean {
 }
 
 export function runCommandCheck(command: string): boolean {
-   return acceptedCommands.indexOf(command) >= 0;
+   const result = acceptedCommands.indexOf(command) >= 0;
+   if (!result)
+      echo(`command \"${command}\" is not available.`);
+   return result;
 }
