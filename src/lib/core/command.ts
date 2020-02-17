@@ -4,6 +4,7 @@ import { sync } from 'rimraf';
 export class Runner {
 
    private readonly command: string;
+   private readonly originBranchName: string = 'develop';
 
    constructor(command: string) {
       this.command = command;
@@ -24,16 +25,14 @@ export class Runner {
    }
 
    private clean(): void {
-      this.cleanFolders();
-      exec('gulp services:console:stop');
-      exec('git clean -fdxq');
-      exec('git pull --rebase');
-      exec('npm ci');
-      exec('nuget restore');
-      exec('gulp solution:build');
-      exec('gulp db:deploy');
-      exec('gulp');
-      exec('gulp services:console:start');
+      this.services(() => {
+         exec('git clean -fdx');
+         exec('git pull');
+         this.restore();
+         exec('gulp solution:build');
+         exec('gulp');
+         exec('gulp db:deploy');
+      });
    }
 
    private pull(): void {
@@ -45,10 +44,10 @@ export class Runner {
       const branchName = this.currentBranchName;
       this.services(() => {
          this.cleanFolders();
-         exec('git checkout develop');
+         this.checkout(this.originBranchName);
          exec('git pull --rebase');
-         exec('git checkout ' + branchName);
-         exec('git merge develop');
+         this.checkout(branchName);
+         exec('git merge ' + this.originBranchName);
          this.restore();
          exec('gulp');
       });
@@ -70,5 +69,9 @@ export class Runner {
       exec('gulp services:console:stop');
       callback();
       exec('gulp services:console:start');
+   }
+
+   private checkout(branchName: string): void {
+      exec('git checkout ' + branchName);
    }
 }
