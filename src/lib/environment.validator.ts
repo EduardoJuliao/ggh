@@ -1,6 +1,6 @@
 import { which, echo } from 'shelljs';
 import { pathDependencies, acceptedCommands, optionals } from '../env.json';
-import { getKeys, diff } from './helpers/array.helpers.js';
+import { getKeys, diff, findOptionalInArray, findObjectInArray, findIndex } from './helpers/array.helpers.js';
 
 const optionalKeys = getKeys(optionals);
 
@@ -15,7 +15,7 @@ export function runEnvCheck(): boolean {
    return true;
 }
 
-export function runOptionalCheck(optionalCommands: Array<{ key: string, value: string }>): boolean {
+export function runOptionalCheck(optionalCommands: Array<{ [s: string]: string }>): boolean {
    var args = getKeys(optionalCommands);
    const nonRecognizedKeys = diff(args, optionalKeys);
 
@@ -25,7 +25,22 @@ export function runOptionalCheck(optionalCommands: Array<{ key: string, value: s
       return false;
    }
 
-   return true;
+   let result = false;
+   args.some(key => {
+      const value = findObjectInArray<string>(optionalCommands, key);
+      const opt = findOptionalInArray(optionals, key);
+      result = opt.acceptedValues.indexOf(value) >= 0;
+      if (!result) {
+         echo(`the value "${value}" is not valid for "${key}"`);
+         const keys = opt.acceptedValues.join('" , "');
+         echo(`accepted values are: "${keys}"`);
+      }
+      return !result;
+   });
+
+   console.log(result);
+
+   return result;
 }
 
 export function runCommandCheck(command: string): boolean {

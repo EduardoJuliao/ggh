@@ -25,6 +25,29 @@ describe('Array helper tests', () => {
       assert.deepEqual(keys, expected);
    });
 
+   it('can get index', () => {
+      const optionals = [
+         {
+            "db": {
+               "default": "db:tiny",
+               "acceptedValues": ["db:deploy", "db:tiny", "db:small", "db:large"]
+            }
+         },
+         {
+            "rebase": {
+               "default": "",
+               "acceptedValues": ["--rebase"]
+            }
+         }
+      ];
+
+      const keys = ["db", "rebase"];
+      for (var i = 0; i < keys.length; i++) {
+         const index = helper.findIndex(optionals, keys[i]);
+         expect(index).to.be.equal(i);
+      }
+   })
+
    it('can get object in an array', () => {
       const optionals = [
          {

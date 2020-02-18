@@ -22,8 +22,18 @@ export function diff(source: string[], comparer: string[]): string[] {
       .filter(element => !comparer.includes(element));
 }
 
-export function findObjectInArray(source: Array<{ [s: string]: unknown }>, keyToFind: string): Optional | null {
-   const index = source.findIndex(element => Object.keys(element).indexOf(keyToFind) >= 0);
+export function findIndex(source: Array<{ [s: string]: unknown }>, keyToFind: string): number {
+   return source.findIndex(element => Object.keys(element).indexOf(keyToFind) >= 0);
+}
+
+export function findOptionalInArray(source: Array<{ [s: string]: unknown }>, keyToFind: string): Optional {
+   const index = findIndex(source, keyToFind);
    const obj = source[index];
    return Object.values(obj)[0] as Optional;
+}
+
+export function findObjectInArray<T>(source: Array<{ [s: string]: unknown }>, keyToFind: string): T {
+   const index = findIndex(source, keyToFind);
+   const obj = source[index];
+   return Object.values(obj)[0] as T;
 }
