@@ -8,6 +8,7 @@
   },
   "scripts": {
     "tsc": "tsc",
+    "test": "ts-mocha src/**/*.tests.ts",
     "pull": "tsc && node ./build/app.js --command=pull",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/*.ts",
     "prod": "tsc && node ./build/app.js",
@@ -37,6 +38,7 @@
     "@types/shelljs": "^0.8.6",
     "@types/yargs": "^15.0.3",
     "mocha": "^7.0.1",
+    "ts-mocha": "^6.0.0",
     "yargs": "^15.1.0"
   }
 }
