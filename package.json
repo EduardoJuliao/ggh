@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc",
     "test": "ts-mocha src/**/*.tests.ts",
-    "integration-test": "tsc && node ./build/app.js pull --db=db:tiny",
+    "integration-test": "tsc && node ./build/app.js pull --db=db:tiny push rebase",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/*.ts",
     "prod": "tsc && node ./build/app.js",
     "publish-local": "tsc && npm install -g"

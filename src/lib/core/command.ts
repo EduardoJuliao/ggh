@@ -1,16 +1,21 @@
 import { exec } from 'shelljs';
 import { sync } from 'rimraf';
-import { findObjectInArray } from '../helpers/array.helpers';
+import { IGitCommand } from './interfaces/command.git.interface';
 
 export class Runner {
 
    private readonly command: string;
    private readonly originBranchName: string = 'develop';
    private readonly optionals: { [s: string]: string; }[];
+   private readonly gitCommands: IGitCommand;
 
-   constructor(command: string, optionals: Array<{ [s: string]: string }>) {
+   constructor(
+      command: string,
+      gitCommands: IGitCommand,
+      optionals: Array<{ [s: string]: string }>) {
       this.command = command;
       this.optionals = optionals;
+      this.gitCommands = gitCommands;
    }
 
    public async run(): Promise<void> {
@@ -29,7 +34,7 @@ export class Runner {
 
    private clean(): void {
       this.services(() => {
-         exec('git clean -fdx');
+         this.gitCommands.clean();
          this.restore();
          exec('gulp solution:build');
          exec('gulp');
@@ -38,25 +43,25 @@ export class Runner {
    }
 
    private pull(): void {
-      exec('git pull');
+      this.gitCommands.pull();
       exec('gulp');
    }
 
    private merge(): void {
-      const branchName = this.currentBranchName;
+      const branchName = this.gitCommands.currentBranchName;
       this.services(() => {
          this.cleanFolders();
-         this.checkout(this.originBranchName);
-         exec('git pull --rebase');
-         this.checkout(branchName);
-         exec('git merge ' + this.originBranchName);
-         this.push();
+         this.gitCommands.checkout(this.originBranchName);
+         this.gitCommands.pull();
+         this.gitCommands.checkout(branchName);
+         this.gitCommands.merge(this.originBranchName);
+         this.gitCommands.push();
          this.restore();
          exec('gulp');
       });
    }
 
-   private currentBranchName: string = exec('git rev-parse --abbrev-ref HEAD', { silent: true }).stdout;
+
 
    private restore(): void {
       exec('nuget restore');
@@ -72,16 +77,5 @@ export class Runner {
       exec('gulp services:console:stop');
       callback();
       exec('gulp services:console:start');
-   }
-
-   private checkout(branchName: string): void {
-      exec('git checkout ' + branchName);
-   }
-
-   private push(): void {
-      const shouldPush = findObjectInArray<string>(this.optionals, "push");
-      if (shouldPush === "Y" || shouldPush === "y") {
-         exec('git push');
-      }
    }
 }
