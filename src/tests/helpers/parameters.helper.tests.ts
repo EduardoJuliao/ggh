@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as helper from '../../lib/helpers/parameters.helper';
 
 describe('YARGS parameters', () => {
-   const args = {
+   const args: any = {
       _: ['pull', 'rebase', 'push'],
       $0: 'bin/**/*.tests.js',
    };
