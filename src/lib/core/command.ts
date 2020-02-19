@@ -1,20 +1,21 @@
+import { IGulpCommand } from './interfaces/commands/command.gulp.interface';
 import { exec } from 'shelljs';
 import { sync } from 'rimraf';
-import { IGitCommand } from './interfaces/command.git.interface';
+import { IGitCommand } from './interfaces/commands/command.git.interface';
 
 export class Runner {
 
    private readonly command: string;
    private readonly originBranchName: string = 'develop';
-   private readonly optionals: { [s: string]: string; }[];
    private readonly gitCommands: IGitCommand;
+   private readonly gulpCommands: IGulpCommand;
 
    constructor(
       command: string,
       gitCommands: IGitCommand,
-      optionals: Array<{ [s: string]: string }>) {
+      gulpCommands: IGulpCommand) {
       this.command = command;
-      this.optionals = optionals;
+      this.gulpCommands = gulpCommands;
       this.gitCommands = gitCommands;
    }
 
@@ -33,23 +34,23 @@ export class Runner {
    }
 
    private clean(): void {
-      this.services(() => {
+      this.gulpCommands.runUnderServices(() => {
          this.gitCommands.clean();
          this.restore();
-         exec('gulp solution:build');
-         exec('gulp');
-         exec('gulp db:tiny');
+         this.gulpCommands.buildSolution();
+         this.gulpCommands.gulp();
+         this.gulpCommands.buildDb();
       });
    }
 
    private pull(): void {
       this.gitCommands.pull();
-      exec('gulp');
+      this.gulpCommands.gulp();
    }
 
    private merge(): void {
       const branchName = this.gitCommands.currentBranchName;
-      this.services(() => {
+      this.gulpCommands.runUnderServices(() => {
          this.cleanFolders();
          this.gitCommands.checkout(this.originBranchName);
          this.gitCommands.pull();
@@ -57,11 +58,9 @@ export class Runner {
          this.gitCommands.merge(this.originBranchName);
          this.gitCommands.push();
          this.restore();
-         exec('gulp');
+         this.gulpCommands.gulp();
       });
    }
-
-
 
    private restore(): void {
       exec('nuget restore');
@@ -71,11 +70,5 @@ export class Runner {
    private cleanFolders(): void {
       sync('./bin');
       sync('./test-bin');
-   }
-
-   private services(callback: () => void) {
-      exec('gulp services:console:stop');
-      callback();
-      exec('gulp services:console:start');
    }
 }

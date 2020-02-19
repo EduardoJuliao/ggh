@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { GulpCommands } from './lib/core/command.gulp';
 import { GitCommands } from './lib/core/command.git';
 import { argv } from 'yargs';
 import { runEnvCheck, runCommandCheck, runOptionalCheck } from './lib/environment.validator';
@@ -10,10 +11,11 @@ const secondaryCommands = argv._.slice(1);
 const parameters = getRemainingProperties(argv);
 
 const gitCommands = new GitCommands(secondaryCommands);
+const gulpCommands = new GulpCommands(parameters);
 
 if (!runCommandCheck(primaryCommand)) process.exit();
 if (!runOptionalCheck(parameters)) process.exit();
 if (!runEnvCheck()) process.exit();
 
-const runner = new Runner(primaryCommand, gitCommands, parameters);
+const runner = new Runner(primaryCommand, gitCommands, gulpCommands);
 runner.run();

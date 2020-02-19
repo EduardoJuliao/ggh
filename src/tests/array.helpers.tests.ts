@@ -70,4 +70,12 @@ describe('Array helper tests', () => {
          expect(result).to.have.all.keys("default", "acceptedValues");
       }
    });
+
+   it('can get value from array', () => {
+      const optional = [{ 'db': 'db:tiny' }];
+
+      const value = helper.findObjectInArray<string>(optional, 'db');
+
+      expect(value).to.be.equal('db:tiny');
+   })
 })
