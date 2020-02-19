@@ -1,3 +1,10 @@
+/**
+ * Get the remaining parameters from YARGS.
+ *
+ * @export
+ * @param {*} argv
+ * @returns {Array<{ [s: string]: string }>}
+ */
 export function getRemainingProperties(argv: any): Array<{ [s: string]: string }> {
    var result = [];
    const allKeys = Object.keys(argv);

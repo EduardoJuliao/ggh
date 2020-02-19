@@ -1,6 +1,6 @@
 import { which, echo } from 'shelljs';
-import { pathDependencies, acceptedCommands, optionals } from '../env.json';
-import { getKeys, diff, findOptionalInArray, findObjectInArray, findIndex } from './helpers/array.helpers.js';
+import { pathDependencies, acceptedPrimaryCommands, optionals } from '../env.json';
+import { getKeys, diff, findOptionalInArray, findObjectInArray } from './helpers/array.helpers.js';
 
 const optionalKeys = getKeys(optionals);
 
@@ -48,7 +48,7 @@ export function runOptionalCheck(optionalCommands: Array<{ [s: string]: string }
 }
 
 export function runCommandCheck(command: string): boolean {
-   const result = acceptedCommands.indexOf(command) >= 0;
+   const result = acceptedPrimaryCommands.indexOf(command) >= 0;
    if (!result)
       echo(`command \"${command}\" is not available.`);
    return result;
