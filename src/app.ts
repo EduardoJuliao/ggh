@@ -3,7 +3,7 @@ import { GulpCommands } from './lib/core/command.gulp';
 import { GitCommands } from './lib/core/command.git';
 import { argv } from 'yargs';
 import { runEnvCheck, runCommandCheck, runOptionalCheck } from './lib/environment.validator';
-import { getRemainingProperties } from './lib/core/parameters';
+import { getRemainingProperties } from './lib/helpers/parameters.helper';
 import { Runner } from './lib/core/command';
 
 const primaryCommand = argv._[0];

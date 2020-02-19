@@ -1,6 +1,6 @@
 import { which, echo } from 'shelljs';
 import { pathDependencies, acceptedPrimaryCommands, optionals } from '../env.json';
-import { getKeys, diff, findOptionalInArray, findObjectInArray } from './helpers/array.helpers.js';
+import { getKeys, diff, findOptionalInArray, findObjectInArray } from './helpers/array.helper';
 
 const optionalKeys = getKeys(optionals);
 

@@ -1,6 +1,6 @@
 import { IGulpCommand } from './interfaces/commands/command.gulp.interface';
 import { exec } from "shelljs";
-import { findObjectInArray } from '../helpers/array.helpers';
+import { findObjectInArray } from '../helpers/array.helper';
 
 
 export class GulpCommands implements IGulpCommand {

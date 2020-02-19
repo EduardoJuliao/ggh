@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { expect } from 'chai';
-import * as helper from '../../lib/core/parameters';
+import * as helper from '../../lib/helpers/parameters.helper';
 
 describe('YARGS parameters', () => {
    const args = {
