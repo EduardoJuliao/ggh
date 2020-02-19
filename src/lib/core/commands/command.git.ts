@@ -1,5 +1,5 @@
 import { exec } from "shelljs";
-import { IGitCommand } from "./interfaces/commands/command.git.interface";
+import { IGitCommand } from "../interfaces/commands/command.git.interface";
 
 
 export class GitCommands implements IGitCommand {

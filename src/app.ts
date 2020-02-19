@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { echo } from 'shelljs';
 import { IEnvironmentRunner } from './lib/core/interfaces/validator/environment.runner';
-import { GulpCommands } from './lib/core/command.gulp';
-import { GitCommands } from './lib/core/command.git';
+import { GulpCommands } from './lib/core/commands/command.gulp';
+import { GitCommands } from './lib/core/commands/command.git';
 import { argv } from 'yargs';
 import { EnvironmentValidator } from './lib/environment.validator';
 import { getRemainingProperties } from './lib/helpers/parameters.helper';
