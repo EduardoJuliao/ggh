@@ -34,6 +34,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.9",
     "@types/clui": "^0.3.0",
+    "@types/figlet": "^1.2.0",
     "@types/mocha": "^7.0.1",
     "@types/rimraf": "^2.0.3",
     "@types/shelljs": "^0.8.6",

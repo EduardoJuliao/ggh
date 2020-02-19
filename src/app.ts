@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { echo } from 'shelljs';
 import { IEnvironmentRunner } from './lib/core/interfaces/validator/environment.runner';
 import { GulpCommands } from './lib/core/command.gulp';
 import { GitCommands } from './lib/core/command.git';
@@ -6,6 +7,9 @@ import { argv } from 'yargs';
 import { EnvironmentValidator } from './lib/environment.validator';
 import { getRemainingProperties } from './lib/helpers/parameters.helper';
 import { Runner } from './lib/core/command';
+import { showCLIName } from './lib/display';
+
+showCLIName();
 
 const environmentChecker: IEnvironmentRunner = new EnvironmentValidator();
 
