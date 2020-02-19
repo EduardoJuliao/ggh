@@ -17,6 +17,9 @@ export function runEnvCheck(): boolean {
 
 export function runOptionalCheck(optionalCommands: Array<{ [s: string]: string }>): boolean {
    //TODO: needs to be smaller and unit tested
+   if (optionalCommands.length === 0)
+      return true;
+
    var args = getKeys(optionalCommands);
    const nonRecognizedKeys = diff(args, optionalKeys);
 
