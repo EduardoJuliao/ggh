@@ -1,7 +1,9 @@
+import { IRestorerCommands } from './interfaces/commands/command.restorer.interface';
 import { IGulpCommand } from './interfaces/commands/command.gulp.interface';
 import { exec } from 'shelljs';
 import { sync } from 'rimraf';
 import { IGitCommand } from './interfaces/commands/command.git.interface';
+import { ICleanerCommands } from './interfaces/commands/command.cleaner.interface';
 
 export class Runner {
 
@@ -9,14 +11,20 @@ export class Runner {
    private readonly originBranchName: string = 'develop';
    private readonly gitCommands: IGitCommand;
    private readonly gulpCommands: IGulpCommand;
+   private readonly cleanerCommands: ICleanerCommands;
+   private readonly restorerCommands: IRestorerCommands;
 
    constructor(
       command: string,
       gitCommands: IGitCommand,
-      gulpCommands: IGulpCommand) {
+      gulpCommands: IGulpCommand,
+      cleanerCommands: ICleanerCommands,
+      restorerCommands: IRestorerCommands) {
       this.command = command;
       this.gulpCommands = gulpCommands;
       this.gitCommands = gitCommands;
+      this.cleanerCommands = cleanerCommands;
+      this.restorerCommands = restorerCommands;
    }
 
    public async run(): Promise<void> {
@@ -36,7 +44,7 @@ export class Runner {
    private clean(): void {
       this.gulpCommands.runUnderServices(() => {
          this.gitCommands.clean();
-         this.restore();
+         this.restorerCommands.restore();
          this.gulpCommands.buildSolution();
          this.gulpCommands.gulp();
          this.gulpCommands.buildDb();
@@ -51,24 +59,14 @@ export class Runner {
    private merge(): void {
       const branchName = this.gitCommands.currentBranchName;
       this.gulpCommands.runUnderServices(() => {
-         this.cleanFolders();
+         this.cleanerCommands.cleanFolders();
          this.gitCommands.checkout(this.originBranchName);
          this.gitCommands.pull();
          this.gitCommands.checkout(branchName);
          this.gitCommands.merge(this.originBranchName);
          this.gitCommands.push();
-         this.restore();
+         this.restorerCommands.restore();
          this.gulpCommands.gulp();
       });
-   }
-
-   private restore(): void {
-      exec('nuget restore');
-      exec('npm ci');
-   }
-
-   private cleanFolders(): void {
-      sync('./bin');
-      sync('./test-bin');
    }
 }

@@ -7,5 +7,9 @@ export function showCLIName(): void {
          figlet.textSync('# GGH', { font: 'DOS Rebel' })
       ),
    );
-   console.log(chalk.green('Preparing your environment...'));
+   console.log(chalk.blueBright('Preparing your environment...'));
+}
+
+export function showCommand(command: string): void {
+   console.log(chalk.blueBright(command));
 }

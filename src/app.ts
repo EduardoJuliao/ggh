@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { echo } from 'shelljs';
+import { RestorerCommands } from './lib/core/commands/command.restorer';
+import { CleanerCommands } from './lib/core/commands/command.cleaner';
 import { IEnvironmentRunner } from './lib/core/interfaces/validator/environment.runner';
 import { GulpCommands } from './lib/core/commands/command.gulp';
 import { GitCommands } from './lib/core/commands/command.git';
@@ -19,11 +20,13 @@ const parameters = getRemainingProperties(argv);
 
 const gitCommands = new GitCommands(secondaryCommands);
 const gulpCommands = new GulpCommands(parameters);
+const cleanerCommands = new CleanerCommands();
+const restorerCommands = new RestorerCommands();
 
 if (!environmentChecker.runEnvCheck()) process.exit();
 if (!environmentChecker.runCommandCheck(primaryCommand)) process.exit();
 if (!environmentChecker.runOptionalCheck(parameters)) process.exit();
 if (!environmentChecker.runSecondaryCommandCheck(secondaryCommands)) process.exit();
 
-const runner = new Runner(primaryCommand, gitCommands, gulpCommands);
+const runner = new Runner(primaryCommand, gitCommands, gulpCommands, cleanerCommands, restorerCommands);
 runner.run();
