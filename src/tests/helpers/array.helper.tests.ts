@@ -1,4 +1,4 @@
-import * as helper from '../lib/helpers/array.helper';
+import * as helper from '../../lib/helpers/array.helper';
 import * as assert from 'assert';
 import { expect } from 'chai';
 
