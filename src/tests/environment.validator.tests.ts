@@ -1,8 +1,11 @@
+import { IEnvironmentChecker } from './../lib/core/interfaces/validator/environment.checker';
 import * as assert from 'assert';
 import { expect } from 'chai';
-import * as validator from '../lib/environment.validator';
+import { EnvironmentValidator } from '../lib/environment.validator';
 
 describe('Environment tests', () => {
+
+   let validator: IEnvironmentChecker = new EnvironmentValidator();
 
    describe('Accepted primary commands', () => {
       it('returns false for invalid command', () => {
