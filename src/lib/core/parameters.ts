@@ -1,4 +1,4 @@
-export function getRemainingProperties(argv: any): any[] {
+export function getRemainingProperties(argv: any): Array<{ [s: string]: string }> {
    var result = [];
    const allKeys = Object.keys(argv);
    const keys = allKeys.filter((o: string) => o !== "_" && o !== "$0");

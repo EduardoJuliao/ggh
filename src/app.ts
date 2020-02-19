@@ -11,5 +11,5 @@ if (!runCommandCheck(command)) process.exit();
 if (!runOptionalCheck(parameters)) process.exit();
 if (!runEnvCheck()) process.exit();
 
-const runner = new Runner(command);
+const runner = new Runner(command, parameters);
 runner.run();

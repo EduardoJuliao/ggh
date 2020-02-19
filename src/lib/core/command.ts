@@ -1,13 +1,16 @@
 import { exec } from 'shelljs';
 import { sync } from 'rimraf';
+import { findObjectInArray } from '../helpers/array.helpers';
 
 export class Runner {
 
    private readonly command: string;
    private readonly originBranchName: string = 'develop';
+   private readonly optionals: { [s: string]: string; }[];
 
-   constructor(command: string) {
+   constructor(command: string, optionals: Array<{ [s: string]: string }>) {
       this.command = command;
+      this.optionals = optionals;
    }
 
    public async run(): Promise<void> {
@@ -47,6 +50,7 @@ export class Runner {
          exec('git pull --rebase');
          this.checkout(branchName);
          exec('git merge ' + this.originBranchName);
+         this.push();
          this.restore();
          exec('gulp');
       });
@@ -72,5 +76,12 @@ export class Runner {
 
    private checkout(branchName: string): void {
       exec('git checkout ' + branchName);
+   }
+
+   private push(): void {
+      const shouldPush = findObjectInArray<string>(this.optionals, "push");
+      if (shouldPush === "Y" || shouldPush === "y") {
+         exec('git push');
+      }
    }
 }

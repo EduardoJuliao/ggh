@@ -69,5 +69,5 @@ describe('Array helper tests', () => {
          const result = helper.findObjectInArray(optionals, keys[i]);
          expect(result).to.have.all.keys("default", "acceptedValues");
       }
-   })
+   });
 })
