@@ -1,7 +1,5 @@
 import { IRestorerCommands } from './interfaces/commands/command.restorer.interface';
 import { IGulpCommand } from './interfaces/commands/command.gulp.interface';
-import { exec } from 'shelljs';
-import { sync } from 'rimraf';
 import { IGitCommand } from './interfaces/commands/command.git.interface';
 import { ICleanerCommands } from './interfaces/commands/command.cleaner.interface';
 
