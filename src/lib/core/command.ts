@@ -2,6 +2,7 @@ import { IRestorerCommands } from './interfaces/commands/command.restorer.interf
 import { IGulpCommand } from './interfaces/commands/command.gulp.interface';
 import { IGitCommand } from './interfaces/commands/command.git.interface';
 import { ICleanerCommands } from './interfaces/commands/command.cleaner.interface';
+import { showCommand } from '../display';
 
 export class Runner {
 
@@ -26,6 +27,8 @@ export class Runner {
    }
 
    public async run(): Promise<void> {
+      showCommand('Preparing your environment...');
+
       switch (this.command) {
          case 'pull':
             this.pull();
