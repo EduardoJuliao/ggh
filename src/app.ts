@@ -4,13 +4,15 @@ import { CleanerCommands } from './lib/core/commands/command.cleaner';
 import { IEnvironmentRunner } from './lib/core/interfaces/validator/environment.runner';
 import { GulpCommands } from './lib/core/commands/command.gulp';
 import { GitCommands } from './lib/core/commands/command.git';
-import { argv } from 'yargs';
 import { EnvironmentValidator } from './lib/environment.validator';
 import { getRemainingProperties } from './lib/helpers/parameters.helper';
 import { Runner } from './lib/core/command';
 import { showCLIName } from './lib/display';
+import configureHelper from './ggh.args';
 
 showCLIName();
+
+var argv = configureHelper();
 
 const environmentChecker: IEnvironmentRunner = new EnvironmentValidator();
 
